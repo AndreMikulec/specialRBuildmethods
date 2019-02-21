@@ -242,11 +242,17 @@ Function InstallInno {
   Progress ("Downloading InnoSetup from: " + $inno_url)
   & "C:\Program Files\Git\mingw64\bin\curl.exe" -s -o ../innosetup.exe -L $inno_url
 
+  # /DIR=
+  # IN SOME STRANGE interactive cases, Inno 5 may INSTEAD
+  # BE INSTALLED TO "C:\InnoSetup5".
+  # TO PREVENT  MIS-INSTALLATION TO THAT DIRECTORY, 
+  # MANUALLY TELL EXACTLY where INSTALL.
+  # 
   Progress "Installig InnoSetup"
-  Start-Process -FilePath ..\innosetup.exe -ArgumentList /SILENT -NoNewWindow -Wait
+  Start-Process -FilePath ..\innosetup.exe -ArgumentList /SILENT /DIR="C:\Program Files (x86)\Inno Setup 5" -NoNewWindow -Wait
 
   Progress "InnoSetup installation: Done"
-  Get-ItemProperty "C:\InnoSetup5\ISCC.exe"        # OLD  **** # Get-ItemProperty "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" ****
+  Get-ItemProperty "C:\Program Files (x86)\Inno Setup 5\ISCC.exe"
 }
 
 function CheckExitCode($msg) {
