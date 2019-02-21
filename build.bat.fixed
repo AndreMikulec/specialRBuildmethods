@@ -38,11 +38,11 @@ set PATH=W:\Rtools35\bin;%PATH%
 :: “rm -rf” equivalent for Windows?
 :: https://stackoverflow.com/questions/97875/rm-rf-equivalent-for-windows
 ::
-icacls %R_NAME% /inheritance:e /grant Everyone:(f)
+icacls %R_NAME% /inheritance:e /grant Everyone:(f) /grant Users:(f) /t
 :: rm -Rf %R_NAME%
 rd /S /Q %R_NAME%
 mkdir %R_NAME%
-icacls %R_NAME% /inheritance:e /grant Everyone:(f)
+icacls %R_NAME% /inheritance:e /grant Everyone:(f) /grant Users:(f) /t
 
 :: Needed to fix tar symlinks
 set MSYS=winsymlinks:lnk
