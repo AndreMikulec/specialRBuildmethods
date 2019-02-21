@@ -1,14 +1,24 @@
 
+
+REM
+REM To *** install the software ***, powershell requires
+REM Start -> Command Prompt->More -> Run as Administror
+REM 
+
 REM before RUNNING CHECK
 REM
 REM https://github.com/rwinlib/base
 REM
 REM LOOKING for ANY recent COMMITS
 
+REM
 set source=https://cran.r-project.org/src/base-prerelease/R-latest.tar.gz
 set archive=r-patched
+REM ALTERNATIVELY ... SEE THE appveyor.yml web page
+REM 
 
-REM NOTE: %builddir% SEEMS not USED
+REM NOTE: %builddir% SEEMS not USED: but IT is the 
+REM sibling directory location OF *THIS* directory and CALLED "BUILD"
 REM
 REM important in build.bat (HARD-CODED RELATIVE BUILD PATH)
 REM
@@ -18,8 +28,29 @@ REM e.g. my build directory would then be
 REM          W:\R-3.5._\BUILD
 REM output folder then WOULD BE THE FOLLOWING
 REM   W:\R-3.5._\BUILD\R-source-win32
+REM
+REM   OR
+REM   W:\R-3.5._\BUILD\R-latest.AMMENDED-win32 
+REM
 REM   W:\R-3.5._\BUILD\R-source-win64
-
+REM   OR
+REM   W:\R-3.5._\BUILD\R-latest.AMMENDED-win64
+REM
+REM (THIS *NAME* IS BASED ON WHATEVER NAME IS USED IN THE CALL STATEMENT) 
+REM E.G.
+REM
+REM call .\scripts\build.bat R-latest.AMMENDED.tar.gz 32
+REM call .\scripts\build.bat R-latest.AMMENDED.tar.gz 64
+REM 
+REM INSIDE OF build-r-release.bat OR build-r-patched.bat OR build-r-devel
+REM 
+REM if called 
+REM .\scripts\build.bat R-source.tar.gz
+REM
+REM THEN THE OUTPUT may? be?
+REM 
+REM R-source-win64-win64
+REM
 
 
 REM IF I ALREADY HAVE THE GITHUB FILES (FROM A .ZIP) 
@@ -52,7 +83,7 @@ REM IS OVERWRIDDEN AND HARDCODED in BOTH (see far below):
 REM
 REM build.bat AND MkRules.local.in
 REM 
-FROM APPVEYOR01.PS1 rtools/Rtools is just a bare-bones OLD cygwin directory
+REM APPVEYOR01.PS1 rtools/Rtools is just a bare-bones OLD cygwin directory
 REM (SEEMS not-used)
 
 
@@ -82,7 +113,7 @@ REM NOTE: MY RTOOLS has a tar that can DO: "--strip-components=1" ( 'C R tools' 
 REM 
 REM try HARD to remove a directory
 REM 
-REM icacls %R_NAME% /inheritance:e /grant Everyone:(f)
+REM icacls %R_NAME% /grant Everyone:(f) /grant Users:(f) /t /inheritance:e /t
 REM :: rm -Rf %R_NAME%
 REM rd /S /Q %R_NAME%
 REM mkdir %R_NAME%
@@ -144,14 +175,15 @@ if not exist .\files\MkRules.local.in (
 REM profile.txt
 REM
 REM leave as is: W:\R-3.5._\base.AMMENDED\files\profile.txt
-REM
+REM IF DONE INTERACTIVELY, at MiKTeX, may "hang".
+REM USE needs to press return.
 
 
 
 REM download and then place and/or install software
 REM 
-powershell -ExecutionPolicy Unrestricted  -File APPVEYOR01.PS1
-
+powershell -File APPVEYOR01.PS1
+REM 
 
 
 REM IF I ALREADY HAVE THE SUBMODULES 
@@ -208,7 +240,7 @@ REM For the 7-zip method, choose "tar"
 REM Leave all of the other options at Default.
 REM
 REM If one chose R-latest.tar.gz or R-patched.tar.gz
-rem then 7-zip-up all files into a folder called: /R-patched
+REM then 7-zip-up all files into a folder called: /R-patched
 REM 
 REM Differently, if one chose R-devel.tar.gz, 
 REM then 7-zip up all files into a folder called /R-devel
